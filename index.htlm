@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenSparkAsia - Reseplanv2</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.jrpass.com/blog/wp-content/uploads/2024/04/shibuya-sky-tokyo-jr-pass.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+        }
+        
+        .hero-image {
+            height: 50vh;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, rgba(244,114,182,0) 0%, rgba(244,114,182,1) 50%, rgba(244,114,182,0) 100%);
+            margin: 40px 0;
+        }
+        .location-header {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            min-height: 200px;
+        }
+        .seoul-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://english.seoul.go.kr/wp-content/uploads/2022/03/starfield-library-COEX05.jpg');
+        }
+        .tokyo-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.travelcaffeine.com/wp-content/uploads/2025/01/sarah-bricker-shibuya-sky-observation-deck-scramble-crossing-skyscraper-tokyo-japan-280.jpg');
+        }
+        .kyoto-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://a2.cdn.japantravel.com/photo/45504-186990/1440x960!/tokyo-teamlab-planets-tokyo-186990.jpg');
+        }
+        .osaka-header {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://offbeatjapan.com/wp-content/uploads/2011/10/tokyo-tower-night-landmark.jpg');
+        }
+        .card {
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+        .attraction-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .contents-list a {
+            text-decoration: none;
+            color: #4338ca;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        .contents-list a:hover {
+            color: #f472b6;
+            background-color: #f3f4f6;
+            border-radius: 4px;
+        }
+        .transport-card {
+            background-color: #f9fafb;
+            border-left: 4px solid #4338ca;
+        }
+        .location-badge {
+            background-color: #f472b6;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .restaurant-card {
+            border-left: 4px solid #10b981;
+        }
+        
+        .nav-pill {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-pill:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-50 print:hidden no-print">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-wrap items-center justify-between">
+                <div class="w-full flex justify-between lg:w-auto">
+                    <a href="#top" class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-plane-departure text-blue-500 mr-2"></i>Asienresa 2025
+                    </a>
+                    <button id="menu-toggle" class="lg:hidden focus:outline-none">
+                        <i class="fas fa-bars text-blue-500"></i>
+                    </button>
+                </div>
+                
+                <div id="menu" class="hidden lg:flex w-full lg:w-auto mt-2 lg:mt-0">
+                    <ul class="flex flex-col lg:flex-row list-none lg:ml-auto space-y-2 lg:space-y-0 lg:space-x-4">
+                        <li><a href="#overview" class="nav-pill px-4 py-2 rounded-full bg-gray-100 hover:bg-blue-100 text-gray-800 block">Översikt</a></li>
+                        <li><a href="#seoul" class="nav-pill px-4 py-2 rounded-full bg-gray-100 hover:bg-red-100 text-gray-800 block">Seoul</a></li>
+                        <li><a href="#tokyo" class="nav-pill px-4 py-2 rounded-full bg-gray-100 hover:bg-blue-100 text-gray-800 block">Tokyo</a></li>
+                        <li><a href="#kyoto" class="nav-pill px-4 py-2 rounded-full bg-gray-100 hover:bg-green-100 text-gray-800 block">Kyoto</a></li>
+                        <li><a href="#osaka" class="nav-pill px-4 py-2 rounded-full bg-gray-100 hover:bg-yellow-100 text-gray-800 block">Osaka</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="top" class="hero-image bg-cover bg-center" style="background-image: url('https://dskyoto.s3.amazonaws.com/gallery/full/8514/5559/7797/08-20131216_FushimiInari_Mainspot-307.jpg');">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="text-center px-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Asienresa 2025</h1>
+                <p class="text-xl text-white mb-6 max-w-2xl drop-shadow-lg">Seoul · Tokyo · Kyoto · Osaka</p>
+                <p class="text-md text-white drop-shadow-lg">4 juli - 21 juli 2025</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        
+        <!-- Table of Contents -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-700">Innehållsförteckning</h2>
+            <div class="contents-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Seoul (4-8 juli)</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#seoul-hotel"><i class="fas fa-hotel mr-2"></i>Acube Hotel Dongdaemun</a></li>
+                        <li><a href="#seoul-activities"><i class="fas fa-calendar-day mr-2"></i>Dagliga aktiviteter</a></li>
+                        <li><a href="#seoul-starfield"><i class="fas fa-book-open mr-2"></i>Starfield Library</a></li>
+                        <li><a href="#seoul-transport"><i class="fas fa-subway mr-2"></i>Transport i Seoul</a></li>
+                        <li><a href="#seoul-restaurants"><i class="fas fa-utensils mr-2"></i>Restauranger</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Tokyo (9-16 juli)</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#tokyo-hotel"><i class="fas fa-hotel mr-2"></i>Tobu Hotel Levant Tokyo</a></li>
+                        <li><a href="#tokyo-activities"><i class="fas fa-calendar-day mr-2"></i>Dagliga aktiviteter</a></li>
+                        <li><a href="#tokyo-teamlab"><i class="fas fa-paint-brush mr-2"></i>TeamLab</a></li>
+                        <li><a href="#tokyo-shibuya"><i class="fas fa-binoculars mr-2"></i>Shibuya Sky</a></li>
+                        <li><a href="#tokyo-tower"><i class="fas fa-broadcast-tower mr-2"></i>Tokyo Tower</a></li>
+                        <li><a href="#tokyo-transport"><i class="fas fa-train mr-2"></i>Transport i Tokyo</a></li>
+                        <li><a href="#tokyo-restaurants"><i class="fas fa-utensils mr-2"></i>Restauranger</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Kyoto (16-19 juli)</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#kyoto-hotel"><i class="fas fa-hotel mr-2"></i>Rihga Gran Kyoto</a></li>
+                        <li><a href="#kyoto-activities"><i class="fas fa-calendar-day mr-2"></i>Dagliga aktiviteter</a></li>
+                        <li><a href="#kyoto-transport"><i class="fas fa-train mr-2"></i>Transport i Kyoto</a></li>
+                        <li><a href="#kyoto-restaurants"><i class="fas fa-utensils mr-2"></i>Restauranger</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Osaka (19-21 juli)</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#osaka-hotel"><i class="fas fa-hotel mr-2"></i>川House難波南-花园町</a></li>
+                        <li><a href="#osaka-activities"><i class="fas fa-calendar-day mr-2"></i>Dagliga aktiviteter</a></li>
+                        <li><a href="#osaka-transport"><i class="fas fa-train mr-2"></i>Transport i Osaka</a></li>
+                        <li><a href="#osaka-restaurants"><i class="fas fa-utensils mr-2"></i>Restauranger</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="overview">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-700">Reseöversikt</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card rounded-lg border p-4">
+                    <div class="font-bold mb-2">Seoul</div>
+                    <p class="text-sm text-gray-600">4 juli - 8 juli (4 nätter)</p>
+                    <p class="text-sm">Acube Hotel Dongdaemun</p>
+                    <p class="text-xs text-gray-500 mt-2">Ankomst till Seoul den 4 juli kl 17:30</p>
+                </div>
+                <div class="card rounded-lg border p-4">
+                    <div class="font-bold mb-2">Tokyo</div>
+                    <p class="text-sm text-gray-600">9 juli - 16 juli (7 nätter)</p>
+                    <p class="text-sm">Tobu Hotel Levant Tokyo</p>
+                    <p class="text-xs text-gray-500 mt-2">Flyg till Tokyo den 9 juli, ankomst kl 18:55</p>
+                </div>
+                <div class="card rounded-lg border p-4">
+                    <div class="font-bold mb-2">Kyoto</div>
+                    <p class="text-sm text-gray-600">16 juli - 19 juli (3 nätter)</p>
+                    <p class="text-sm">Rihga Gran Kyoto</p>
+                    <p class="text-xs text-gray-500 mt-2">Tåg från Tokyo till Kyoto med Shinkansen den 16 juli</p>
+                </div>
+                <div class="card rounded-lg border p-4">
+                    <div class="font-bold mb-2">Osaka</div>
+                    <p class="text-sm text-gray-600">19 juli - 21 juli (2 nätter)</p>
+                    <p class="text-sm">川House難波南-花园町</p>
+                    <p class="text-xs text-gray-500 mt-2">Avresa från Osaka den 21 juli till Stockholm</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seoul Section -->
+        <div class="location-header seoul-header rounded-lg flex items-center justify-center mb-8" id="seoul">
+            <h2 class="text-4xl font-bold">Seoul</h2>
+        </div>
+
+        <!-- Seoul Hotel -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="seoul-hotel">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Acube Hotel Dongdaemun</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="mb-2"><strong>Datum:</strong> 4 juli - 8 juli (4 nätter)</p>
+                    <p class="mb-2"><strong>Adress:</strong> 5 Dongho-ro 35-gil, Jung District, Seoul</p>
+                    <p class="mb-2"><strong>Telefon:</strong> +82 2-2264-2888</p>
+                    <p class="mb-2"><strong>Betyg:</strong> 4.2/5 (368 omdömen)</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Acube+Hotel+Dongdaemun+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Om hotellet</h4>
+                    <p class="text-gray-700 mb-4">Bekvämt hotell med ett avkopplande läge nära Dongdaemun, en av Seouls mest kända shoppingdistrikt. Erbjuder bekväma rum, terrass, restaurang, och en 24-timmars lobbybar.</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-wifi mr-1"></i>Gratis WiFi</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-coffee mr-1"></i>Frukost</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-snowflake mr-1"></i>Luftkonditionering</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-utensils mr-1"></i>Restaurang</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-child mr-1"></i>Barnvänligt</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-smoking-ban mr-1"></i>Rökfritt</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="border rounded-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.6576104665224!2d127.01025617555657!3d37.56696192419805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca325733728fd%3A0x568e36cb7b7e1b62!2sAcube%20Hotel!5e0!3m2!1sen!2sjp!4v1716660042309!5m2!1sen!2sjp" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seoul Activities -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="seoul-activities">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Dagliga aktiviteter i Seoul</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 1 (4 juli) - Ankomst</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Ankomst till Seoul kl 17:30</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Incheckning på Acube Hotel Dongdaemun</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Dongdaemun-området - prova lokala koreanska specialiteter</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 2 (5 juli) - Klassiska sevärdheter</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Gyeongbokgung Palace på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Bukchon Hanok Village</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska de traditionella husen i Bukchon Hanok Village</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Insadong-området - konsthantverk och souvenirer</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag på Gwangjang Market - prova street food</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 3 (6 juli) - Modern Seoul</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Myeongdong på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Myeongdong - koreansk BBQ</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök N Seoul Tower på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska Hongdae-området på kvällen - livligt studentområde</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag och dryck i Hongdae</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 4 (7 juli) - Shopping och kultur</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Starfield Library på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska Dongdaemun Design Plaza och shoppingdistriktet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Dongdaemun-området</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök till Gangnam-området och Bongeunsa Temple</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Gangnam</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Avskedsmiddag i Seoul</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 5 (8 juli) - Avfärd</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utcheckning från hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Sista-minuten-shopping om tid finns</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Transport till flygplatsen för avfärd till Tokyo</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Starfield Library -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="seoul-starfield">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Starfield Library</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <img src="https://english.seoul.go.kr/wp-content/uploads/2022/03/starfield-library-COEX05.jpg" alt="Starfield Library" class="rounded-lg w-full h-64 object-cover mb-4">
+                    <p class="text-gray-700 mb-4">Starfield Library är ett unikt offentligt bibliotek beläget i centrum av COEX Mall i Gangnam. Biblioteket sträcker sig över tre våningar med en höjd på 13 meter och är känt för sina imponerande bokhyllor som rymmer över 50 000 böcker och internationella tidskrifter.</p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Öppettider & Entré</h4>
+                    <p class="mb-4">10:30-22:00 dagligen<br>Fri entré</p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Adress</h4>
+                    <p class="mb-2">513, Yeongdong-daero, Gangnam-gu, Seoul</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Starfield+Library+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Hur man tar sig dit</h4>
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="mb-2"><strong>Med tunnelbana:</strong></p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Bongeunsa Station (linje 9, utgång 7), 7 minuters promenad</li>
+                            <li>Samseong Station (linje 2, utgång 5/6), 7 minuters promenad</li>
+                        </ul>
+                        
+                        <p class="mb-2"><strong>Med buss:</strong></p>
+                        <ul class="list-disc pl-5">
+                            <li>Ta buss 401 från Seoul Station till COEX Mall</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-bold text-lg mb-2">Tips för besöket</h4>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Besök på morgonen för färre människor och bättre fotomöjligheter</li>
+                        <li>Du får bläddra i böckerna men inte låna hem dem</li>
+                        <li>Perfekt att kombinera med shopping i COEX Mall</li>
+                        <li>Trevliga kaféer i närheten för en fika</li>
+                    </ul>
+                    
+                    <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                        <div class="checklist-item"><input type="checkbox"><span>Ta foton av den spektakulära designen</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Hitta en lugn läshörna</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Besök COEX Aquarium (finns i samma byggnad)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Ät på någon av restaurangerna i COEX Mall</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h4 class="font-bold text-lg mb-2">Populära restauranger nära Starfield Library</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="card restaurant-card rounded-lg border p-4">
+                        <h5 class="font-semibold mb-1">Terarosa Gwanghwamun</h5>
+                        <p class="text-sm text-gray-600 mb-2">Kafé med utmärkt kaffe och pastrys</p>
+                        <a href="https://maps.google.com/?q=Terarosa+Gwanghwamun+Seoul" target="_blank" class="text-indigo-600 hover:underline text-sm"><i class="fas fa-map-marker-alt mr-1"></i>Visa på karta</a>
+                    </div>
+                    <div class="card restaurant-card rounded-lg border p-4">
+                        <h5 class="font-semibold mb-1">On the Border COEX</h5>
+                        <p class="text-sm text-gray-600 mb-2">Mexikansk restaurang med stor meny</p>
+                        <a href="https://maps.google.com/?q=On+the+Border+COEX+Seoul" target="_blank" class="text-indigo-600 hover:underline text-sm"><i class="fas fa-map-marker-alt mr-1"></i>Visa på karta</a>
+                    </div>
+                    <div class="card restaurant-card rounded-lg border p-4">
+                        <h5 class="font-semibold mb-1">Pig In The Garden</h5>
+                        <p class="text-sm text-gray-600 mb-2">Koreanskt BBQ i trevlig miljö</p>
+                        <a href="https://maps.google.com/?q=Pig+In+The+Garden+Seoul" target="_blank" class="text-indigo-600 hover:underline text-sm"><i class="fas fa-map-marker-alt mr-1"></i>Visa på karta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seoul Transport -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="seoul-transport">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Transport i Seoul</h3>
+            
+            <div class="transport-card p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-2">T-money kort</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-700 mb-4">T-money är ett återuppladdningsbart kort som kan användas för att betala för kollektivtrafik i hela Seoul och andra städer i Sydkorea, inklusive bussar, tunnelbana och vissa taxibilar.</p>
+                        
+                        <h5 class="font-semibold mb-1">Fördelar:</h5>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>100 KRW rabatt på varje resa jämfört med att betala kontant</li>
+                            <li>Smidig överföring mellan bussar och tunnelbanor inom 30 minuter</li>
+                            <li>Kan även användas i bekvämlighetsbutiker och vissa restauranger</li>
+                            <li>Tillgängligt på olika språk inklusive engelska</li>
+                        </ul>
+                        
+                        <h5 class="font-semibold mb-1">Var man kan köpa:</h5>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Tunnelbanestationer (biljettautomater)</li>
+                            <li>Bekvämlighetsbutiker (7-Eleven, CU, GS25)</li>
+                            <li>Incheon och Gimpo flygplatser</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold mb-1">Pris:</h5>
+                        <p class="mb-4">4,000 KRW för kortet (deposition) + valfritt belopp att ladda på (rekommenderat minst 10,000 KRW)</p>
+                        
+                        <h5 class="font-semibold mb-1">Återanvändning:</h5>
+                        <p class="mb-4">Kortet kan laddas om flera gånger och har ingen utgångsdatum. Outnyttjat saldo sparas i upp till 5 år.</p>
+                        
+                        <h5 class="font-semibold mb-1">För turister:</h5>
+                        <p class="mb-4">Det finns även ett specialkort för turister kallat "Mpass" som ger obegränsade resor under en viss period, men för en 4-dagars vistelse i Seoul är det vanliga T-money kortet mest prisvärt.</p>
+                        
+                        <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                            <div class="checklist-item"><input type="checkbox"><span>Köp T-money kort vid ankomst till Seoul</span></div>
+                            <div class="checklist-item"><input type="checkbox"><span>Ladda på tillräckligt för 4 dagars resande (ca 30,000 KRW)</span></div>
+                            <div class="checklist-item"><input type="checkbox"><span>Ladda ner "Subway Korea" appen för att planera resor</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seoul Restaurants -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="seoul-restaurants">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Rekommenderade restauranger i Seoul</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Seomjingang Jaecheop Daseulgi</h4>
+                    <div class="location-badge">Nära hotellet</div>
+                    <p class="text-gray-700 mb-2">Populär skaldjursrestaurang känd för sina färska skaldjur, särskilt musslor och räkor.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Bulgogi, Kimchi-jjigae (kimchigryta)</p>
+                    <a href="https://maps.google.com/?q=Seomjingang+Jaecheop+Daseulgi+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Songlim Wooleong Ssambap</h4>
+                    <div class="location-badge">Dongdaemun</div>
+                    <p class="text-gray-700 mb-2">Traditionellt koreanskt kök med utsökt ssambap (ris insvept i grönsaksblad).</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Ssambap-set, fermenterade sidorätter</p>
+                    <a href="https://maps.google.com/?q=Songlim+Wooleong+Ssambap+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Jang Kalguksu</h4>
+                    <div class="location-badge">Jung-gu</div>
+                    <p class="text-gray-700 mb-2">Specialiserad på handgjorda nudelrätter med milda men smakrika soppbaser.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Kalguksu (handskar nudlar), manduguk (dumplingssoppa)</p>
+                    <a href="https://maps.google.com/?q=Jang+Kalguksu+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">The Kitchen Neul</h4>
+                    <div class="location-badge">Euljiro</div>
+                    <p class="text-gray-700 mb-2">Modern restaurang som serverar nytolkade koreanska klassiker i stilfull miljö.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Dolsot bibimbap, seafood pajeon (skaldjurspannkaka)</p>
+                    <a href="https://maps.google.com/?q=The+Kitchen+Neul+Seoul" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tokyo Section -->
+        <div class="location-header tokyo-header rounded-lg flex items-center justify-center mb-8" id="tokyo">
+            <h2 class="text-4xl font-bold">Tokyo</h2>
+        </div>
+
+        <!-- Tokyo Hotel -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-hotel">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Tobu Hotel Levant Tokyo</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="mb-2"><strong>Datum:</strong> 9 juli - 16 juli (7 nätter)</p>
+                    <p class="mb-2"><strong>Adress:</strong> 1 Chome-2-2 Kinshi, Sumida City, Tokyo</p>
+                    <p class="mb-2"><strong>Telefon:</strong> +81 3-5611-5511</p>
+                    <p class="mb-2"><strong>Betyg:</strong> 4.2/5 (4669 omdömen)</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Tobu+Hotel+Levant+Tokyo" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Om hotellet</h4>
+                    <p class="text-gray-700 mb-4">Elegant hotell med utsikt över Tokyo Skytree. Hotellet erbjuder bekväma rum med Tokyo Skytree-utsikt, två restauranger, en tesalong och gratis shuttle till Tokyo Disney Resort.</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-wifi mr-1"></i>Gratis WiFi</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-coffee mr-1"></i>Avgiftsbelagd frukost</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-car mr-1"></i>Avgiftsbelagd parkering</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-snowflake mr-1"></i>Luftkonditionering</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-utensils mr-1"></i>Restaurang</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-child mr-1"></i>Barnvänligt</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-plane-arrival mr-1"></i>Flygplatstransport</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-glass-martini-alt mr-1"></i>Bar</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-smoking-ban mr-1"></i>Rökfritt</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="border rounded-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.9098487869154!2d139.81346747550344!3d35.69757652911462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188941d9da6e93%3A0xc0be0b34da75cd89!2sTobu%20Hotel%20Levant%20Tokyo!5e0!3m2!1sen!2sjp!4v1716660248583!5m2!1sen!2sjp" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tokyo Activities -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-activities">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Dagliga aktiviteter i Tokyo</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 1 (9 juli) - Ankomst</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Ankomst till Tokyo kl 18:55</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Incheckning på Tobu Hotel Levant Tokyo</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Enklare middag nära hotellet, upptäcka närområdet</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 2 (10 juli) - Moderna Tokyo</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Shibuya Crossing på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Shibuya Sky</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Shibuya</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Shibuya-området</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska Harajuku och Takeshita Street på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Promenad i Yoyogi Park</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Harajuku</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 3 (11 juli) - Mount Fuji dagsutflykt</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Tidig frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Bokad dagsutflykt till Mount Fuji</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök femte stationen och Kawaguchiko-området</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch under utflykten</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Båttur på Kawaguchi-sjön (om möjligt)</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Återkomst till hotellet på kvällen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Enklare middag nära hotellet</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 4 (12 juli) - Traditionella Tokyo</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Tokyo Tower på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Sensoji-templet i Asakusa</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping på Nakamise-gatan</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Asakusa-området</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Båttur på Sumida-floden till Odaiba på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska Odaiba - shopping och sevärdheter</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Odaiba</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 5 (13 juli) - Shopping och kultur</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Ginza - Tokyos lyxigaste shoppingdistrikt</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Ginza</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Tsukiji Outer Market på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utforska Akihabara - elektronik- och animeområdet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Akihabara</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 6 (14 juli) - Parks och museer</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök TeamLab Planets på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Shinjuku Gyoen National Garden</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Shinjuku-området</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Tokyo Metropolitan Government Building för utsikt över staden</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Shinjuku</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 7 (15 juli) - Tokyo Disney</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Tidig frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Resa till Tokyo DisneySea med hotellets gratis shuttle</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Hela dagen på Tokyo DisneySea</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch och middag i parken</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Kvällsshower och fyrverkerier</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Återkomst till hotellet</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 8 (16 juli) - Avfärd till Kyoto</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utcheckning från hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Sista-minuten-shopping om tid finns</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Tåg till Tokyo Station</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shinkansen (snabbtåg) till Kyoto</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Incheckning på Rihga Gran Kyoto</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TeamLab -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-teamlab">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">TeamLab Planets</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <img src="https://www.eclectickim.com/wp-content/uploads/2023/07/eclectickimdotcom-DSC_1365-Enhanced-NR-2.jpg" alt="TeamLab Planets" class="rounded-lg w-full h-64 object-cover mb-4">
+                    <p class="text-gray-700 mb-4">TeamLab Planets är ett unikt immersivt konstmuseum där du vandrar genom vatten och upplever interaktiva konstinstallationer. Skapad av konstkollektivet teamLab, erbjuder museet upplevelser där konstverken förändras beroende på besökarnas närvaro och interaktioner.</p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Öppettider & Biljetter</h4>
+                    <p class="mb-2">09:00-21:00 dagligen (sista insläpp 20:00)</p>
+                    <p class="mb-4">
+                        <strong>Biljettpris:</strong><br>
+                        Vuxna (18+ år): 3,800 JPY<br>
+                        Högstadie-/gymnasieelever: 2,800 JPY<br>
+                        Barn (4-12 år): 1,500 JPY<br>
+                        Under 3 år: Gratis
+                    </p>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                        <p class="font-semibold mb-1">Viktig info!</p>
+                        <p class="text-sm">Biljetter bör köpas i förväg online då de ofta är slutsålda på plats. Du kommer att vada i vatten upp till 10 cm djupt, så ta med extra strumpor eller förbered dig på att gå barfota.</p>
+                    </div>
+                    
+                    <a href="https://teamlabplanets.dmm.com/en" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition mb-4">Köp biljetter online</a>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Adress & Hur man tar sig dit</h4>
+                    <p class="mb-2">6-1-16 Toyosu, Koto-ku, Tokyo</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=TeamLab+Planets+Tokyo" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="mb-2"><strong>Med tunnelbana:</strong></p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Toyosu Station (Yurakucho Line), 10 minuters promenad</li>
+                            <li>Shin-Toyosu Station (Yurikamome Line), 6 minuters promenad</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-bold text-lg mb-2">Tips för besöket</h4>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Boka biljetter i förväg för att säkerställa tillträde</li>
+                        <li>Besök tidigt på morgonen för färre människor</li>
+                        <li>Räkna med att bli blöt - du kommer att gå genom vatten</li>
+                        <li>Besöket tar cirka 1-2 timmar</li>
+                        <li>Fotografering är tillåten och uppmuntras</li>
+                        <li>Vatten tillhandahålls för att tvätta fötterna efter</li>
+                    </ul>
+                    
+                    <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                        <div class="checklist-item"><input type="checkbox"><span>Ta med extra strumpor eller förbered dig på att gå barfota</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Bär bekväma, lättviktsklänning som du inte har något emot att få lite blöt</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Ta med vattentätt fodral för din telefon/kamera</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Besök närliggande Toyosu Fish Market före eller efter besöket</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shibuya Sky -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-shibuya">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Shibuya Sky</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <img src="https://media.timeout.com/images/105547038/750/422/image.jpg" alt="Shibuya Sky" class="rounded-lg w-full h-64 object-cover mb-4">
+                    <p class="text-gray-700 mb-4">Shibuya Sky är en 360° öppen utsiktsplattform belägen på taket av skyskrapan Shibuya Scramble Square. Från en höjd av 229 meter erbjuder den en spektakulär panoramautsikt över Tokyo, inklusive den ikoniska Shibuya-korsningen direkt nedanför.</p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Öppettider & Biljetter</h4>
+                    <p class="mb-2">9:00-23:00 (sista insläpp 22:00)</p>
+                    <p class="mb-4">
+                        <strong>Biljettpris:</strong><br>
+                        Vuxna: 2,000 JPY<br>
+                        Barn (6-17 år): 1,000 JPY<br>
+                        Barn under 5 år: Gratis
+                    </p>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                        <p class="font-semibold mb-1">Bästa tiden att besöka</p>
+                        <p class="text-sm">För att se Shibuya i dagsljus och uppleva solnedgången och kvällsbelysningen, rekommenderas att boka 1-2 timmar före solnedgången. Biljetterna är daterade och tidsbundna, så förboka för att säkerställa inträde vid önskad tid.</p>
+                    </div>
+                    
+                    <a href="https://www.shibuya-scramble-square.com.e.apy.hp.transer.com/sky/ticket/" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition mb-4">Köp biljetter online</a>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Adress & Hur man tar sig dit</h4>
+                    <p class="mb-2">2-24-12 Shibuya, Shibuya-ku, Tokyo (Shibuya Scramble Square, 47:e våningen)</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Shibuya+Sky" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="mb-2"><strong>Med tunnelbana:</strong></p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Shibuya Station, direkt ansluten till byggnadens entré</li>
+                            <li>Serveras av JR Yamanote Line, Saikyo Line, Shonan-Shinjuku Line, Tokyo Metro Ginza Line, Hanzomon Line, Fukutoshin Line och Keio Inokashira Line</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-bold text-lg mb-2">Tips för besöket</h4>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Boka biljetter i förväg för populära tider (solnedgång, kvällstid)</li>
+                        <li>Besök på en klar dag för bästa utsikt</li>
+                        <li>Räkna med väntetid för hissar, särskilt vid toppbesökstider</li>
+                        <li>Det finns en öppen terrass med vindskydd samt "Sky Edge" utan räcken (med säkerhetsfunktioner)</li>
+                        <li>Ha med dig kamera och ladda telefonen</li>
+                        <li>Det finns en kafé och en bar för drycker och snacks</li>
+                    </ul>
+                    
+                    <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                        <div class="checklist-item"><input type="checkbox"><span>Boka biljetter för sent eftermiddag/tidig kväll</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Ta foton av Shibuya Crossing från ovan</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Besök "Sky Edge" för en oförglömlig upplevelse utan räcken</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Prova en drink från Sky Paradise baren</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Kombinera med shopping i Shibuya Scramble Square köpcentrum</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tokyo Tower -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-tower">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Tokyo Tower</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <img src="https://offbeatjapan.com/wp-content/uploads/2011/10/tokyo-tower-night-landmark.jpg" alt="Tokyo Tower" class="rounded-lg w-full h-64 object-cover mb-4">
+                    <p class="text-gray-700 mb-4">Tokyo Tower är en 333 meter hög kommunikations- och utsiktstorn i distriktet Shiba-koen i Minato, Tokyo. Inspirerad av Eiffeltornet var det Japans högsta torn fram till Tokyo Skytree byggdes 2012. Det är fortfarande ett ikoniskt landmärke i Tokyo och erbjuder fantastisk utsikt över staden.</p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Öppettider & Biljetter</h4>
+                    <p class="mb-2">9:00-23:00 (sista insläpp 22:30)</p>
+                    <p class="mb-4">
+                        <strong>Biljettpris:</strong><br>
+                        Main Deck (150m): 1,200 JPY för vuxna, 700 JPY för barn (7-15 år), 600 JPY för barn (4-6 år)<br>
+                        Top Deck (250m) + Main Deck: 3,000 JPY för vuxna, 2,100 JPY för barn (7-15 år), 1,800 JPY för barn (4-6 år)
+                    </p>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                        <p class="font-semibold mb-1">Värde för pengarna</p>
+                        <p class="text-sm">Main Deck är tillräckligt för att njuta av utsikten över Tokyo. Top Deck kostar betydligt mer och erbjuder en liknande utsikt, om än från en högre höjd. För de flesta besökare räcker Main Deck.</p>
+                    </div>
+                    
+                    <a href="https://en.tokyotower.co.jp/ticket/" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition mb-4">Köp biljetter online</a>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Adress & Hur man tar sig dit från hotellet</h4>
+                    <p class="mb-2">4 Chome-2-8 Shibakoen, Minato City, Tokyo</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Tokyo+Tower" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="mb-2"><strong>Från Tobu Hotel Levant Tokyo:</strong></p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Ta JR Sobu Line från Kinshicho Station till Bakurocho Station</li>
+                            <li>Byt till Toei Asakusa Line till Daimon Station</li>
+                            <li>Ca 8 minuters promenad från Daimon Station till Tokyo Tower</li>
+                            <li>Total restid: ca 40 minuter</li>
+                        </ul>
+                        
+                        <p class="mb-2"><strong>Alternativ rutt:</strong></p>
+                        <ul class="list-disc pl-5">
+                            <li>Ta JR Sobu Line från Kinshicho Station till Tokyo Station</li>
+                            <li>Byt till JR Yamanote Line till Hamamatsucho Station</li>
+                            <li>Ca 15 minuters promenad från Hamamatsucho Station</li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="font-bold text-lg mb-2">Tips för besöket</h4>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Kvällstid erbjuder tornet en vacker upplyst utsikt över Tokyo</li>
+                        <li>Tornet är särskilt vackert utifrån på natten när det är upplyst</li>
+                        <li>Det finns en "One Piece Tower" temapark i byggnadens nedre del (separat inträde)</li>
+                        <li>Restauranger och souvenirbutiker finns på bottenvåningen</li>
+                        <li>Köer är oftast kortare på vardagar och på förmiddagen</li>
+                    </ul>
+                    
+                    <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                        <div class="checklist-item"><input type="checkbox"><span>Ta foton av Tokyo Tower utifrån (Shiba Park erbjuder bra vyer)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Besök Main Deck för stadsvy</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Läs om tornets historia i utställningarna</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Besök närliggande Zojo-ji Temple för en fin kontrast mellan traditionellt och modernt</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Utforska FootTown komplexet med butiker och restauranger vid basen</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tokyo Transport -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-transport">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Transport i Tokyo</h3>
+            
+            <div class="transport-card p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-2">Suica/Pasmo kort</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-700 mb-4">Suica och Pasmo är återuppladdningsbara IC-kort som kan användas för att betala för kollektivtrafik och även för inköp i butiker, restauranger och automater. De fungerar på exakt samma sätt, skillnaden är bara att Suica utfärdas av JR East och Pasmo av Tokyo Metro.</p>
+                        
+                        <h5 class="font-semibold mb-1">Fördelar:</h5>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>Smidig betalning på all kollektivtrafik inklusive JR, tunnelbana, buss</li>
+                            <li>Inget behov av att köpa separata biljetter för varje resa</li>
+                            <li>Kan användas för att betala i bekvämlighetsbutiker, restauranger och automat</li>
+                            <li>Fungerar i de flesta städer i Japan, inte bara Tokyo</li>
+                        </ul>
+                        
+                        <h5 class="font-semibold mb-1">Var man kan köpa:</h5>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>JR-stationer (biljetautomater och biljettluckor) för Suica</li>
+                            <li>Tokyo Metro-stationer för Pasmo</li>
+                            <li>Haneda och Narita flygplatser</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold mb-1">Specialversion för turister:</h5>
+                        <p class="mb-4">För turister finns "Welcome Suica" eller "Pasmo Passport" som inte kräver återbetalningsavgift. De är giltiga i 28 dagar och kan inte laddas om.</p>
+                        
+                        <h5 class="font-semibold mb-1">Pris:</h5>
+                        <p class="mb-4">2,000 JPY (inkluderar 1,500 JPY i saldo och 500 JPY deposition) för vanliga Suica/Pasmo kort. Welcome Suica finns i olika prisklasser från 1,000 JPY till 10,000 JPY.</p>
+                        
+                        <h5 class="font-semibold mb-1">För en veckas vistelse i Tokyo:</h5>
+                        <p class="mb-4">Det mest kostnadseffektiva alternativet för er 7-dagars vistelse i Tokyo är att köpa ett Welcome Suica kort med 3,000 JPY saldo. Detta bör täcka de flesta av era resor inom staden när ni kombinerar med promenader och enstaka taxiresor.</p>
+                        
+                        <div class="pl-4 border-l-4 border-indigo-200 mt-4">
+                            <div class="checklist-item"><input type="checkbox"><span>Köp Welcome Suica eller Pasmo Passport vid ankomst till flygplatsen</span></div>
+                            <div class="checklist-item"><input type="checkbox"><span>Ladda kortet med cirka 3,000-5,000 JPY per person</span></div>
+                            <div class="checklist-item"><input type="checkbox"><span>Ladda ner "Japan Transit Planner" appen för att planera resor</span></div>
+                            <div class="checklist-item"><input type="checkbox"><span>Spara kvittot för kortet för eventuell återbetalning</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="transport-card p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-2">Kollektivtrafikalternativ i Tokyo</h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h5 class="font-semibold mb-1">Tunnelbana & JR-linjer:</h5>
+                        <p class="mb-4">Tokyo har ett omfattande tunnelbanenät som drivs av två huvudoperatörer - Tokyo Metro och Toei Subway, plus JR-linjer (inklusive den populära Yamanote Line som går runt centrala Tokyo).</p>
+                        
+                        <h5 class="font-semibold mb-1">Bussar:</h5>
+                        <p class="mb-4">Stadsbussar är bra för att nå platser som inte täcks av tunnelbanan. De kan vara svårare att navigera för utländska besökare på grund av begränsad engelsk skyltning.</p>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold mb-1">Taxi:</h5>
+                        <p class="mb-4">Taxibilar är bekväma men dyra. De är ett bra alternativ sent på kvällen eller för platser som är svåra att nå med tunnelbana. De flesta taxichaufförer talar inte engelska, så ha adressen skriven på japanska.</p>
+                        
+                        <h5 class="font-semibold mb-1">Rekommendation för en vecka:</h5>
+                        <p class="mb-4">För er sjudagarsvistelse med besök till olika delar av Tokyo rekommenderas att främst förlita er på tunnelbana och JR-linjer med Suica/Pasmo-kort. Detta är det mest effektiva och ekonomiska alternativet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tokyo Restaurants -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tokyo-restaurants">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Rekommenderade restauranger i Tokyo</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">SKY TREE VIEW RESTAURANT REN</h4>
+                    <div class="location-badge">I Tobu Hotel Levant</div>
+                    <p class="text-gray-700 mb-2">Restaurang på hotellets toppvåning med utsikt över Tokyo Skytree och centrala Tokyo. Erbjuder japanskt kök samt grillad fransk mat.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Japanska set-menyer, grillad biff</p>
+                    <a href="https://maps.google.com/?q=RESTAURANT+REN+Tokyo" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Super Dining Verdure</h4>
+                    <div class="location-badge">I Tobu Hotel Levant</div>
+                    <p class="text-gray-700 mb-2">Populär buffé-restaurang som erbjuder en mängd olika rätter för både lunch och middag.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Lunchbuffé</p>
+                    <a href="https://maps.google.com/?q=Super+Dining+Verdure+Tokyo" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Camel Diner Kinshicho</h4>
+                    <div class="location-badge">Nära hotellet</div>
+                    <p class="text-gray-700 mb-2">Amerikansk-inspirerad diner med hamburgare, sandwiches och andra västerlänska favoriter.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Hamburgare, frukost</p>
+                    <a href="https://maps.google.com/?q=Camel+Diner+Kinshicho" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Haru</h4>
+                    <div class="location-badge">Nära hotellet</div>
+                    <p class="text-gray-700 mb-2">Traditionell japansk restaurang specialiserad på izakaya-mat (japanska tapas).</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Yakitori, sashimi, sake</p>
+                    <a href="https://maps.google.com/?q=Haru+Kinshicho+Tokyo" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kyoto Section -->
+        <div class="location-header kyoto-header rounded-lg flex items-center justify-center mb-8" id="kyoto">
+            <h2 class="text-4xl font-bold">Kyoto</h2>
+        </div>
+
+        <!-- Kyoto Hotel -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="kyoto-hotel">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Rihga Gran Kyoto</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="mb-2"><strong>Datum:</strong> 16 juli - 19 juli (3 nätter)</p>
+                    <p class="mb-2"><strong>Adress:</strong> Higashikujo Nishisannocho, 1, Minami-ku, Kyoto</p>
+                    <p class="mb-2"><strong>Telefon:</strong> +81 75-662-1121</p>
+                    <p class="mb-2"><strong>Betyg:</strong> 4.3/5 (841 omdömen)</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=Rihga+Gran+Kyoto" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Om hotellet</h4>
+                    <p class="text-gray-700 mb-4">Modernt hotell med bekvämt läge endast 5 minuters promenad från Kyoto Station. Erbjuder avslappnade rum, restaurang, bar och japanskt badhus (onsen). Ett utmärkt val för att utforska Kyotos sevärdheter.</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-wifi mr-1"></i>Gratis WiFi</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-coffee mr-1"></i>Avgiftsbelagd frukost</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-snowflake mr-1"></i>Luftkonditionering</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-utensils mr-1"></i>Restaurang</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-child mr-1"></i>Barnvänligt</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-wheelchair mr-1"></i>Tillgängligt</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="border rounded-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.674711061764!2d135.7604175!3d34.9846349!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600108a6b19b4395%3A0xe90df7ba99c51f09!2sRIHGA%20GRAN%20KYOTO!5e0!3m2!1sen!2sjp!4v1716660556037!5m2!1sen!2sjp" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kyoto Activities -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="kyoto-activities">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Dagliga aktiviteter i Kyoto</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 1 (16 juli) - Ankomst och södra Kyoto</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Ankomst till Kyoto med Shinkansen från Tokyo</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Incheckning på Rihga Gran Kyoto</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Fushimi Inari-helgedomen på eftermiddagen (nära hotellet)</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i området kring Kyoto Station</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 2 (17 juli) - Östliga Kyoto</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Kiyomizu-dera templet på morgonen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Promenad genom den historiska Higashiyama-distriktet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Higashiyama</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Gion-distriktet på eftermiddagen - Kyotos berömda geisha-distrikt</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Gion-området</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 3 (18 juli) - Västliga Kyoto</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Kinkaku-ji (Gyllene paviljongen) på morgonen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Ryoan-ji templet och dess berömda zen-trädgård</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i nordvästra Kyoto</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Eftermiddag i Arashiyama - bambuskogen och Togetsukyo-bron</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Arashiyama</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 4 (19 juli) - Avfärd till Osaka</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost på hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utcheckning från hotellet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Nishiki Market (Kyotos köksgata) för shopping och lunch</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Tåg till Osaka (ca. 30 minuter)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kyoto Transport -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="kyoto-transport">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Transport i Kyoto</h3>
+            
+            <div class="transport-card p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-2">Bästa transportsätt i Kyoto</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-700 mb-4">Kyoto har ett mindre omfattande kollektivtrafiknät jämfört med Tokyo, men är fortfarande lätt att ta sig runt i. Stadens centrum är relativt kompakt och många sevärdheter kan nås med buss eller tunnelbana.</p>
+                        
+                        <h5 class="font-semibold mb-1">Suica/Pasmo:</h5>
+                        <p class="mb-4">Ert Suica/Pasmo-kort från Tokyo fungerar även i Kyoto för buss och tunnelbana.</p>
+                        
+                        <h5 class="font-semibold mb-1">Buss:</h5>
+                        <p class="mb-4">Kyotos bussnät är ett av de bästa sätten att ta sig runt staden. Det finns ett omfattande nät av stadsbussar som når de flesta turistattraktioner.</p>
+                        
+                        <h5 class="font-semibold mb-1">Kyoto Bus Pass:</h5>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li>1-dags pass: 800 JPY (obegränsade resor på Kyoto City bussar)</li>
+                            <li>2-dagars pass: 1,700 JPY</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold mb-1">Tunnelbana:</h5>
+                        <p class="mb-4">Kyoto har två tunnelbanelinjer - Karasuma Line (nord-syd) och Tozai Line (öst-väst). De är användbara för specifika destinationer men täcker inte alla turistområden.</p>
+                        
+                        <h5 class="font-semibold mb-1">Taxi:</h5>
+                        <p class="mb-4">Taxibilar är ett bekvämt sätt att nå svårtillgängliga platser eller om du reser i grupp. Priserna är lägre än i Tokyo.</p>
+                        
+                        <h5 class="font-semibold mb-1">Cykel:</h5>
+                        <p class="mb-4">Kyoto är en cykelvänolig stad med många uthyrningsställen. Det kostar ca 1,000-1,500 JPY per dag och är ett utmärkt sätt att utforska staden.</p>
+                        
+                        <h5 class="font-semibold mb-1">Rekommendation för 3 dagar:</h5>
+                        <p class="mb-4">För er 3-dagars vistelse i Kyoto rekommenderas att köpa ett 2-dagars busskort för dag 2 och 3, och använda enstaka biljetter för dag 1. Komplettera med taxi för svårtillgängliga platser.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kyoto Restaurants -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="kyoto-restaurants">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Rekommenderade restauranger i Kyoto</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Pontocho Alley</h4>
+                    <div class="location-badge">Centrala Kyoto</div>
+                    <p class="text-gray-700 mb-2">En pittoresk gränd längs Kamogawa-floden med många traditionella restauranger och teahus. Särskilt vacker på kvällen när lyktorna tänds.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Kaiseki (traditionell japansk meny i flera serveringar)</p>
+                    <a href="https://maps.google.com/?q=Pontocho+Alley+Kyoto" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Nishiki Market</h4>
+                    <div class="location-badge">Centrala Kyoto</div>
+                    <p class="text-gray-700 mb-2">Känd som "Kyotos kök", denna täckta marknadsgata är 400 meter lång och har över 100 matbutiker och restauranger.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Street food, lokala specialiteter, färska råvaror</p>
+                    <a href="https://maps.google.com/?q=Nishiki+Market+Kyoto" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Ippudo Ramen</h4>
+                    <div class="location-badge">Nära Kyoto Station</div>
+                    <p class="text-gray-700 mb-2">Berömd ramenkjed med hög kvalitet och konsekvent goda nudelsoppor.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Akamaru Shinaji (krämig tonkotsu ramen)</p>
+                    <a href="https://maps.google.com/?q=Ippudo+Kyoto+Station" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Izuju Sushi</h4>
+                    <div class="location-badge">Gion</div>
+                    <p class="text-gray-700 mb-2">Etablerad 1912, denna restaurang serverar autentisk Kyoto-stil sushi som skiljer sig från Tokyo-stilen.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Sabaozushi (makrilsushi), Inari sushi</p>
+                    <a href="https://maps.google.com/?q=Izuju+Sushi+Kyoto" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Osaka Section -->
+        <div class="location-header osaka-header rounded-lg flex items-center justify-center mb-8" id="osaka">
+            <h2 class="text-4xl font-bold">Osaka</h2>
+        </div>
+
+        <!-- Osaka Hotel -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="osaka-hotel">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">川House難波南-花园町</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="mb-2"><strong>Datum:</strong> 19 juli - 21 juli (2 nätter)</p>
+                    <p class="mb-2"><strong>Adress:</strong> 1 Chome-10-4 Hanazonominami, Nishinari Ward, Osaka</p>
+                    <p class="mb-2"><strong>Telefon:</strong> +81 70-8919-0939</p>
+                    <p class="mb-2"><strong>Betyg:</strong> 4.7/5 (126 omdömen)</p>
+                    <p class="mb-4"><a href="https://maps.google.com/?q=%E5%B7%9DHOUSE%E8%8A%B1%E5%9C%92%E7%94%BA" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a></p>
+                    
+                    <h4 class="font-bold text-lg mb-2">Om boendet</h4>
+                    <p class="text-gray-700 mb-4">Ett bekvämt serviceboende i Osaka med utmärkt läge för att utforska staden. Nära till Namba-området och många av stadens främsta attraktioner och matplatser.</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-wifi mr-1"></i>Gratis WiFi</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-snowflake mr-1"></i>Luftkonditionering</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-utensils mr-1"></i>Kök</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-child mr-1"></i>Barnvänligt</span>
+                        <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><i class="fas fa-smoking-ban mr-1"></i>Rökfritt</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="border rounded-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.502349089223!2d135.4992012!3d34.6663701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000ddbd9b5b66a3%3A0xaa5ac40197fb8f52!2z5bed77ysSE9VU0XpnZLlnoznlZnvvIjljqbls7DlupfvvIk!5e0!3m2!1sen!2sjp!4v1716660772708!5m2!1sen!2sjp" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Osaka Activities -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="osaka-activities">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Dagliga aktiviteter i Osaka</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 1 (19 juli) - Ankomst och centrala Osaka</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Ankomst till Osaka från Kyoto</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Incheckning på boendet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Dotonbori-området på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Se den berömda Glico-skylten och andra neonskyltar</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Middag i Dotonbori - prova takoyaki och okonomiyaki</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 2 (20 juli) - Utforska Osaka</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost nära boendet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Osaka Castle på förmiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Lunch i Osaka Castle Park</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Besök Osaka Aquarium Kaiyukan på eftermiddagen</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Shopping i Shinsaibashi och Amerikamura</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Avskedsmiddag i Japan - Kushi-katsu (friterade spett)</span></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-2">Dag 3 (21 juli) - Avresa</h4>
+                <div class="pl-4 border-l-4 border-indigo-200">
+                    <div class="checklist-item"><input type="checkbox"><span>Frukost nära boendet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Utcheckning från boendet</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Sista-minuten-shopping om tid finns</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Transport till flygplatsen (Kansai International Airport)</span></div>
+                    <div class="checklist-item"><input type="checkbox"><span>Avresa till Stockholm</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Osaka Transport -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="osaka-transport">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Transport i Osaka</h3>
+            
+            <div class="transport-card p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-lg mb-2">Transportsalternativ i Osaka</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-700 mb-4">Osaka har ett omfattande kollektivtrafiknät som gör det enkelt att ta sig runt i staden. För er korta vistelse på 2 dagar är det bäst att förlita sig på tunnelbanan och JR-linjer.</p>
+                        
+                        <h5 class="font-semibold mb-1">Suica/Pasmo/ICOCA:</h5>
+                        <p class="mb-4">Ert Suica/Pasmo-kort från Tokyo fungerar även i Osaka. Alternativt är ICOCA det lokala IC-kortet för Kansai-regionen.</p>
+                        
+                        <h5 class="font-semibold mb-1">Tunnelbana:</h5>
+                        <p class="mb-4">Osaka Metro är ett omfattande tunnelbanesystem som når de flesta populära turistområden. Det består av 8 linjer och är det mest effektiva sättet att ta sig runt i staden.</p>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold mb-1">Osaka Amazing Pass:</h5>
+                        <p class="mb-4">För 2 dagar kan ni överväga Osaka Amazing Pass som kostar 3,600 JPY för 2 dagar och inkluderar obegränsad användning av tunnelbana och buss samt fri entré till 40+ attraktioner inklusive Osaka Castle.</p>
+                        
+                        <h5 class="font-semibold mb-1">JR-linjer:</h5>
+                        <p class="mb-4">JR Osaka Loop Line går i en cirkel runt centrala Osaka och når många populära områden. Bra för att nå områden som inte täcks av tunnelbanan.</p>
+                        
+                        <h5 class="font-semibold mb-1">Rekommendation för 2 dagar:</h5>
+                        <p class="mb-4">För er 2-dagars vistelse i Osaka rekommenderas att använda Suica/Pasmo-kortet för enskilda resor, eftersom ni inte kommer att göra tillräckligt många resor för att rättfärdiga ett Osaka Amazing Pass om ni inte planerar att besöka många betalda attraktioner.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Osaka Restaurants -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="osaka-restaurants">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Rekommenderade restauranger i Osaka</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Takoyaki Dotonbori Kukuru</h4>
+                    <div class="location-badge">Dotonbori</div>
+                    <p class="text-gray-700 mb-2">Berömd takoyaki-restaurang i hjärtat av Dotonbori. Takoyaki (bläckfiskbollar) är en av Osakas mest kända maträtter.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Original takoyaki, cheese takoyaki</p>
+                    <a href="https://maps.google.com/?q=Takoyaki+Dotonbori+Kukuru" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Mizuno</h4>
+                    <div class="location-badge">Dotonbori</div>
+                    <p class="text-gray-700 mb-2">En av Osakas äldsta och mest respekterade okonomiyaki-restauranger (japansk pannkaka).</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Yamaimo-yaki (bergsyams okonomiyaki), mixa-tama okonomiyaki</p>
+                    <a href="https://maps.google.com/?q=Mizuno+Okonomiyaki+Osaka" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Kani Doraku</h4>
+                    <div class="location-badge">Dotonbori</div>
+                    <p class="text-gray-700 mb-2">Känd krabbrestaurang med en gigantisk rörlig krabba på fasaden. Ett ikoniskt matställe i Osaka.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Krabbrätter, krabblunch-set</p>
+                    <a href="https://maps.google.com/?q=Kani+Doraku+Osaka" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+                
+                <div class="card restaurant-card rounded-lg border p-4">
+                    <h4 class="font-bold text-lg mb-2">Daruma</h4>
+                    <div class="location-badge">Shinsekai</div>
+                    <p class="text-gray-700 mb-2">Grundad 1929, denna restaurang är berömd för sin kushikatsu (panerade och friterade spett) i det historiska Shinsekai-området.</p>
+                    <p class="mb-2"><strong>Rekommenderas:</strong> Kushikatsu-uppsättning med olika köttsorter och grönsaker</p>
+                    <a href="https://maps.google.com/?q=Kushikatsu+Daruma+Shinsekai+Osaka" target="_blank" class="text-indigo-600 hover:underline"><i class="fas fa-map-marker-alt mr-2"></i>Visa på Google Maps</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="tips">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">Tips inför resan</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Packlista</h4>
+                    <div class="pl-4 border-l-4 border-indigo-200 mb-4">
+                        <div class="checklist-item"><input type="checkbox"><span>Pass (minst 6 månader giltighet)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Flygbiljetter och hotellbokningar (utskrivna eller i digital form)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Internationellt körkort (om du planerar att hyra bil)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Kreditkort med låga uttagsavgifter</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Kontanter för initial användning</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Adapter för eluttag (typ A och B i Japan/Korea)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Powerbank för mobilen</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Bekväma skor för mycket promenader</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Sjukförsäkringskort/reseförsäkring</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Mediciner och första hjälpen-artiklar</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Paraply/regnkläder (juli är regnperiod i Japan)</span></div>
+                    </div>
+                    
+                    <h4 class="font-bold text-lg mb-2">Appar att ladda ner</h4>
+                    <div class="pl-4 border-l-4 border-indigo-200">
+                        <div class="checklist-item"><input type="checkbox"><span>Google Maps (ladda ner offlinekartor)</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Google Translate eller Papago för översättning</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Subway Korea för tunnelbana i Seoul</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Japan Transit Planner för tåg i Japan</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Tokyo Subway Navigation för tunnelbana i Tokyo</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>XE Currency för valutaomvandling</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Japan Weather för väderprognos</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Booking.com/Airbnb för att ha tillgång till bokningsdetaljer</span></div>
+                        <div class="checklist-item"><input type="checkbox"><span>Tripadvisor för restauranger och recensioner</span></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Kulturella tips</h4>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Bugning är den traditionella hälsningen i både Japan och Korea</li>
+                        <li>Ta av skorna när du går in i traditionella restauranger med tatamigolv eller vissa privata hem</li>
+                        <li>Dricks ges vanligtvis inte i Japan eller Korea</li>
+                        <li>I Japan är det oartigt att äta medan du går, och i vissa områden är det förbjudet</li>
+                        <li>Använd båda händerna när du ger eller tar emot saker (särskilt pengar, kort eller presenter)</li>
+                        <li>Undvik att prata i telefon på kollektivtrafiken i Japan</li>
+                        <li>Använd de särskilda fotovänliga områdena när du fotograferar geishor i Kyoto</li>
+                        <li>Peka inte med ätpinnar och stick inte ner dem vertikalt i maten (påminner om rökelse vid begravningar)</li>
+                        <li>Sortera ditt skräp enligt lokala regler (Japan har strikta regler för återvinning)</li>
+                    </ul>
+                    
+                    <h4 class="font-bold text-lg mb-2">Språktips</h4>
+                    <div class="mb-4">
+                        <p class="font-semibold mb-1">Japanska:</p>
+                        <ul class="list-disc pl-5 mb-2">
+                            <li>Arigatō (tack)</li>
+                            <li>Sumimasen (ursäkta mig/förlåt)</li>
+                            <li>Konnichiwa (hej)</li>
+                            <li>Hai/Iie (ja/nej)</li>
+                            <li>Oishii (gott/välsmakande)</li>
+                            <li>Ikura desu ka? (Hur mycket kostar det?)</li>
+                            <li>Eigo ga hanasemasu ka? (Talar du engelska?)</li>
+                        </ul>
+                        
+                        <p class="font-semibold mb-1">Koreanska:</p>
+                        <ul class="list-disc pl-5">
+                            <li>Gamsahamnida (tack)</li>
+                            <li>Annyeonghaseyo (hej)</li>
+                            <li>Ne/Aniyo (ja/nej)</li>
+                            <li>Mashisoyo (gott/välsmakande)</li>
+                            <li>Eolmaeyo? (Hur mycket kostar det?)</li>
+                            <li>Yeong-eo halsul julaseyo? (Talar du engelska?)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-indigo-900 text-white p-6 rounded-lg text-center">
+            <h3 class="font-bold text-xl mb-2">Trevlig resa!</h3>
+            <p>Uppdaterad: Juli 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // Spara checkliststatus i localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            // Ladda sparade checkboxar
+            checkboxes.forEach(function(checkbox, index) {
+                const isChecked = localStorage.getItem('checkbox_' + index) === 'true';
+                checkbox.checked = isChecked;
+            });
+            
+            // Spara checkboxstatus vid ändring
+            checkboxes.forEach(function(checkbox, index) {
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem('checkbox_' + index, checkbox.checked);
+                });
+            });
+
+            // Hantera mobilmenyn
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+            
+            if (menuToggle && menu) {
+                menuToggle.addEventListener('click', function() {
+                    menu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
